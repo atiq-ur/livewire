@@ -4,13 +4,21 @@ namespace App\Http\Livewire;
 
 use Carbon\Carbon;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class Comment extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
     public $newComment;
+    public $image;
 //    public $comments;
+    protected $listeners = ['fileUpload' => 'handleFileUpload'];
+
+    public function handleFileUpload($imageData)
+    {
+        $this->image = $imageData;
+   }
 
     /**
      * @throws \Illuminate\Validation\ValidationException

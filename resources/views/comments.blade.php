@@ -7,11 +7,11 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <title>Livewire Comment Example</title>
     @livewireStyles
+    @livewireScripts
 </head>
 <body>
     <h2 class="text-center text-blue-400">Livewire Comments!</h2>
     <livewire:comment />
-    
-     @livewireScripts
+
 </body>
 </html>
