@@ -44,6 +44,9 @@
                 <p class="text-gray-800">
                     {{ $comment->body }}
                 </p>
+                @if($comment->image)
+                    <img src="{{ $comment->imagePath }}" alt=""/>
+                @endif
         </div>
         @endforeach
         {{ $comments->links('pagination-links') }}
