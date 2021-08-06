@@ -15,8 +15,17 @@ class Comment extends Component
     use WithPagination, WithFileUploads;
     public $newComment;
     public $image;
+    public $ticketId;
 //    public $comments;
-    protected $listeners = ['fileUpload' => 'handleFileUpload'];
+    protected $listeners = [
+        'fileUpload' => 'handleFileUpload',
+        'ticketSelected', //when same name for event and function then no need to add function name
+    ];
+
+    public function ticketSelected($ticketId)
+    {
+        $this->ticketId = $ticketId;
+    }
 
     public function handleFileUpload($imageData)
     {
@@ -46,7 +55,8 @@ class Comment extends Component
         // ]);
         $newComment = \App\Models\Comment::create(
             ['body' => $this->newComment, 'user_id' => 1,
-                'image' => $image
+                'image' => $image,
+                'support_ticket_id' => $this->ticketId
             ],
 
         );
@@ -87,12 +97,9 @@ class Comment extends Component
     {
         return view('livewire.comment',
             [
-                'comments' => \App\Models\Comment::paginate(2)
+                'comments' => \App\Models\Comment::where('support_ticket_id',
+                    $this->ticketId)->paginate(2)
             ]);
     }
 
-    public function getImagePathAttribute(): string
-    {
-        return Storage::disk('public')->url($this->image);
-    }
 }
