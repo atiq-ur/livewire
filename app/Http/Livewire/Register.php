@@ -3,14 +3,15 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class Login extends Component
+class Register extends Component
 {
     public $form = [
+        'name' => '',
         'email' => '',
         'password' => '',
+        'password_confirmation' => '',
     ];
 
     /**
@@ -20,7 +21,8 @@ class Login extends Component
     {
         $this->validateOnly($propertyName, [
             'form.email' => 'required|email',
-            'form.password' => 'required',
+            'form.name' => 'required',
+            'form.password' => 'required|confirmed',
         ]);
     }
 
@@ -28,16 +30,15 @@ class Login extends Component
     {
         $this->validate( [
             'form.email' => 'required|email',
-            'form.password' => 'required',
+            'form.name' => 'required',
+            'form.password' => 'required|confirmed',
         ]);
-        if (Auth::attempt($this->form)) {
-            return redirect()->route('home');
-        }
-        session()->flash('message', 'Credentials does not matched');
-
+        User::create($this->form);
+        return redirect(route('login'));
+        //dd($this->form);
     }
     public function render()
     {
-        return view('livewire.login');
+        return view('livewire.register');
     }
 }
